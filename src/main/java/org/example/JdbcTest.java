@@ -13,23 +13,29 @@ public class JdbcTest {
 
         Connection myConn = null;
         Statement myStmt = null;
+        PreparedStatement myPrepStmt = null;
         ResultSet myRs = null;
 
         try {
-            // 1. Get a connection to database
+            // Get a connection to database
             myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/demo", "student" , "student");
 
             System.out.println("Database connection successful!\n");
 
-            // 2. Create a statement
+            // Create/prepare a statement
             myStmt = myConn.createStatement();
+            myPrepStmt = myConn.prepareStatement("select * from employees where salary > ? and department = ?");
 
-            // 3. Execute SQL queriesq
+            // Set parameters
+            myPrepStmt.setDouble(1, 80000);
+            myPrepStmt.setString(2, "Legal");
+
+            // Execute SQL queries
             int rowsAffected = myStmt.executeUpdate("insert into employees" +
                     "(last_name, first_name, email, department, salary) " +
                     "values" +
                     "('NewInsertedFirstName', 'NewInsertedLastName', 'dummyMail@gmail.com', 'HR', '20000.00')");
-            myRs = myStmt.executeQuery("select * from employees");
+            myRs = myPrepStmt.executeQuery();
 
             // 4. Process the result set
             while (myRs.next()) {
