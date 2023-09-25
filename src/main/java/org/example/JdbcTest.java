@@ -24,7 +24,11 @@ public class JdbcTest {
             // 2. Create a statement
             myStmt = myConn.createStatement();
 
-            // 3. Execute SQL query
+            // 3. Execute SQL queriesq
+            int rowsAffected = myStmt.executeUpdate("insert into employees" +
+                    "(last_name, first_name, email, department, salary) " +
+                    "values" +
+                    "('NewInsertedFirstName', 'NewInsertedLastName', 'dummyMail@gmail.com', 'HR', '20000.00')");
             myRs = myStmt.executeQuery("select * from employees");
 
             // 4. Process the result set
