@@ -38,9 +38,14 @@ public class JdbcTest {
             myRs = myPrepStmt.executeQuery();
 
             // 4. Process the result set
-            while (myRs.next()) {
-                System.out.println(myRs.getString("last_name") + ", " + myRs.getString("first_name"));
-            }
+              display(myRs);
+
+            // Reuse the prepare statement
+            myPrepStmt.setDouble(1, 2500);
+            myPrepStmt.setString(2,"HR");
+            myRs = myPrepStmt.executeQuery();
+            display(myRs);
+
         }
         catch (Exception exc) {
             exc.printStackTrace();
@@ -57,6 +62,12 @@ public class JdbcTest {
             if (myConn != null) {
                 myConn.close();
             }
+        }
+    }
+
+    public static void display(ResultSet rs) throws SQLException {
+        while(rs.next()){
+            System.out.println(rs.getString("last_name") + ", " + rs.getString("first_name"));
         }
     }
 
